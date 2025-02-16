@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.DormitoryMapper">
+
+    <sql id="Base_Column_List">
+        id,code,building_id,num,now_num
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Dormitory">
+        select dormitory.*, building.name as buildingName
+        from dormitory
+        left join building on dormitory.building_id = building.id
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="code != null"> and code like concat('%', #{code}, '%')</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Dormitory">
+        select
+        <include refid="Base_Column_List" />
+        from dormitory
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from dormitory
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Dormitory" useGeneratedKeys="true">
+        insert into dormitory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="code != null">code,</if>
+            <if test="buildingId != null">building_id,</if>
+            <if test="num != null">num,</if>
+            <if test="nowNum != null">now_num,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="code != null">#{code},</if>
+            <if test="buildingId != null">#{buildingId},</if>
+            <if test="num != null">#{num},</if>
+            <if test="nowNum != null">#{nowNum},</if>
+        </trim>
+    </insert>
+    <!--code,building_id,num,now_num-->
+    <update id="updateById" parameterType="com.example.entity.Dormitory">
+        update dormitory
+        <set>
+            <if test="code != null">
+                code = #{code},
+            </if>
+            <if test="buildingId != null">
+                building_id = #{buildingId},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+            <if test="nowNum != null">
+                now_num = #{nowNum},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

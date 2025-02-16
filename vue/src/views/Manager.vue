@@ -43,7 +43,8 @@
               <i class="el-icon-menu"></i><span>信息管理</span>
             </template>
             <el-menu-item index="/notice">公告信息</el-menu-item>
-            <el-menu-item index="/building">宿舍信息</el-menu-item>
+            <el-menu-item index="/building">宿舍楼信息</el-menu-item>
+            <el-menu-item index="/dormitory">宿舍楼信息</el-menu-item>
           </el-submenu>
 
           <el-submenu index="user" v-if="user.role === 'ADMIN'">
