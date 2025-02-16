@@ -1,5 +1,6 @@
 package com.example.service;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.example.common.Constants;
 import com.example.common.enums.ResultCodeEnum;
@@ -103,6 +104,29 @@ public class StudentService {
         String token = TokenUtils.createToken(tokenData, dbStudent.getPassword());
         dbStudent.setToken(token);
         return dbStudent;
+    }
+
+    /**
+     * 注册
+     */
+    public void register(Account account) {
+        Student student = BeanUtil.copyProperties(account, Student.class);
+        add(student);
+    }
+
+    /**
+     * 修改密码
+     */
+    public void updatePassword(Account account) {
+        Student dbStudent = studentMapper.selectByUsername(account.getUsername());
+        if (ObjectUtil.isNull(dbStudent)) {
+            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
+        }
+        if (!account.getPassword().equals(dbStudent.getPassword())) {
+            throw new CustomException(ResultCodeEnum.PARAM_PASSWORD_ERROR);
+        }
+        dbStudent.setPassword(account.getNewPassword());
+        studentMapper.updateById(dbStudent);
     }
 
 }

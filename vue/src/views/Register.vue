@@ -7,13 +7,17 @@
           <el-input prefix-icon="el-icon-user" placeholder="请输入账号" v-model="form.username"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input prefix-icon="el-icon-lock" placeholder="请输入密码" show-password  v-model="form.password"></el-input>
+          <el-input prefix-icon="el-icon-lock" placeholder="请输入密码" show-password
+                    v-model="form.password"></el-input>
         </el-form-item>
         <el-form-item prop="confirmPass">
-          <el-input prefix-icon="el-icon-lock" placeholder="请确认密码" show-password  v-model="form.confirmPass"></el-input>
+          <el-input prefix-icon="el-icon-lock" placeholder="请确认密码" show-password
+                    v-model="form.confirmPass"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button style="width: 100%; background-color: #333; border-color: #333; color: white" @click="register">注 册</el-button>
+          <el-button style="width: 100%; background-color: #333; border-color: #333; color: white" @click="register">注
+            册
+          </el-button>
         </el-form-item>
         <div style="display: flex; align-items: center">
           <div style="flex: 1"></div>
@@ -41,16 +45,16 @@ export default {
       }
     }
     return {
-      form: {},
+      form: {role: 'STUDENT'},
       rules: {
         username: [
-          { required: true, message: '请输入账号', trigger: 'blur' },
+          {required: true, message: '请输入账号', trigger: 'blur'},
         ],
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
+          {required: true, message: '请输入密码', trigger: 'blur'},
         ],
         confirmPass: [
-          { validator: validatePassword, trigger: 'blur' }
+          {validator: validatePassword, trigger: 'blur'}
         ]
       }
     }
@@ -89,6 +93,7 @@ export default {
   justify-content: center;
   color: #666;
 }
+
 a {
   color: #2a60c9;
 }

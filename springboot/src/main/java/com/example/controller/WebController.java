@@ -58,6 +58,9 @@ public class WebController {
         if (RoleEnum.ADMIN.name().equals(account.getRole())) {
             adminService.register(account);
         }
+        if (RoleEnum.STUDENT.name().equals(account.getRole())) {
+            studentService.register(account);
+        }
         return Result.success();
     }
 
@@ -72,6 +75,9 @@ public class WebController {
         }
         if (RoleEnum.ADMIN.name().equals(account.getRole())) {
             adminService.updatePassword(account);
+        }
+        if (RoleEnum.STUDENT.name().equals(account.getRole())) {
+            studentService.updatePassword(account);
         }
         return Result.success();
     }
