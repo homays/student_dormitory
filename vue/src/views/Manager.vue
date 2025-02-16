@@ -45,7 +45,7 @@
             <el-menu-item index="/notice">公告信息</el-menu-item>
           </el-submenu>
 
-          <el-submenu index="user">
+          <el-submenu index="user" v-if="user.role === 'ADMIN'">
             <template slot="title">
               <i class="el-icon-menu"></i><span>用户管理</span>
             </template>

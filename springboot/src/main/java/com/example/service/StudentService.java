@@ -4,9 +4,11 @@ import cn.hutool.core.util.ObjectUtil;
 import com.example.common.Constants;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.enums.RoleEnum;
+import com.example.entity.Account;
 import com.example.entity.Student;
 import com.example.exception.CustomException;
 import com.example.mapper.StudentMapper;
+import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -83,6 +85,24 @@ public class StudentService {
         PageHelper.startPage(pageNum, pageSize);
         List<Student> list = studentMapper.selectAll(student);
         return PageInfo.of(list);
+    }
+
+    /**
+     * 登录
+     */
+    public Account login(Account account) {
+        Account dbStudent = studentMapper.selectByUsername(account.getUsername());
+        if (ObjectUtil.isNull(dbStudent)) {
+            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
+        }
+        if (!account.getPassword().equals(dbStudent.getPassword())) {
+            throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
+        }
+        // 生成token
+        String tokenData = dbStudent.getId() + "-" + RoleEnum.STUDENT.name();
+        String token = TokenUtils.createToken(tokenData, dbStudent.getPassword());
+        dbStudent.setToken(token);
+        return dbStudent;
     }
 
 }
