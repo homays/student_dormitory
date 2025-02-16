@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.StayMapper">
+
+    <sql id="Base_Column_List">
+        id,student_id,dormitory_id,building_id,bed
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Stay">
+        select stay.*, student.name as studentName, dormitory.code as dormitoryName, building.name as buildingName
+        from stay
+        left join student on stay.student_id = student.id
+        left join dormitory on stay.dormitory_id = dormitory.id
+        left join building on stay.building_id = building.id
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="studentName != null"> and student.name = #{studentName}</if>
+            <if test="dormitoryName != null"> and dormitory.code = #{dormitoryName}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Stay">
+        select
+        <include refid="Base_Column_List" />
+        from stay
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from stay
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Stay" useGeneratedKeys="true">
+        insert into stay
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="studentId != null">student_id,</if>
+            <if test="dormitoryId != null">dormitory_id,</if>
+            <if test="buildingId != null">building_id,</if>
+            <if test="bed != null">bed,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="studentId != null">#{studentId},</if>
+            <if test="dormitoryId != null">#{dormitoryId},</if>
+            <if test="buildingId != null">#{buildingId},</if>
+            <if test="bed != null">#{bed},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Stay">
+        update stay
+        <set>
+            <if test="studentId != null">
+                student_id = #{studentId},
+            </if>
+            <if test="dormitoryId != null">
+                dormitory_id = #{dormitoryId},
+            </if>
+            <if test="buildingId != null">
+                building_id = #{buildingId},
+            </if>
+            <if test="bed != null">
+                bed = #{bed},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>
