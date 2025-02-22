@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.VisitMapper">
+
+    <sql id="Base_Column_List">
+        id,dormitory_id,content,time
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Visit">
+        select visit.*, dormitory.code as dormitoryName
+        from visit
+        left join dormitory on visit.dormitory_id = dormitory.id
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="content != null"> and content like concat('%', #{content}, '%')</if>
+            <if test="phone != null"> and phone = #{phone}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Visit">
+        select
+        <include refid="Base_Column_List" />
+        from visit
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from visit
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Visit" useGeneratedKeys="true">
+        insert into visit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="dormitoryId != null">dormitory_id,</if>
+            <if test="content != null">content,</if>
+            <if test="time != null">time,</if>
+            <if test="phone != null">phone,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="dormitoryId != null">#{dormitoryId},</if>
+            <if test="content != null">#{content},</if>
+            <if test="time != null">#{time},</if>
+            <if test="phone != null">#{phone},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Visit">
+        update visit
+        <set>
+            <if test="dormitoryId != null">
+                dormitory_id = #{dormitoryId},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

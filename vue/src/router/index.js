@@ -29,6 +29,7 @@ const routes = [
       { path: 'stay', name: 'Stay', meta: { name: '住宿信息' }, component: () => import('../views/manager/Stay') },
       { path: 'exchanges', name: 'Exchanges', meta: { name: '换寝信息' }, component: () => import('../views/manager/Exchanges') },
       { path: 'fix', name: 'Fix', meta: { name: '保修信息' }, component: () => import('../views/manager/Fix') },
+      { path: 'visit', name: 'Visit', meta: { name: '来访登记' }, component: () => import('../views/manager/Visit') },
     ]
   },
   {
