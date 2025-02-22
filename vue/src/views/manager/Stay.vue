@@ -64,7 +64,8 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="更换宿舍/床位" :visible.sync="exchangeVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
+    <el-dialog title="更换宿舍/床位" :visible.sync="exchangeVisible" width="40%" :close-on-click-modal="false"
+               destroy-on-close>
       <el-form label-width="100px" style="padding-right: 50px">
         <el-form-item prop="studentId" label="选择学生">
           <el-select v-model="studentId" placeholder="请选择" style="width: 100%">
@@ -105,6 +106,7 @@ export default {
         ],
         bed: [
           {required: true, message: '请输入床位编号', trigger: 'blur'},
+          {pattern: /^[0-9]*$/, message: '只能输入数字', trigger: 'blur'}
         ]
       },
       ids: [],

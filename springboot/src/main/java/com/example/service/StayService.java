@@ -32,7 +32,7 @@ public class StayService {
             throw new CustomException("-1", "该学生已经有住宿信息了，请勿重复添加");
         }
         // 当前宿舍的床位有没有人住
-        Stay dbStay2 =stayMapper.selectByDormitoryIdAndBed(stay.getDormitoryId(), stay.getBed());
+        Stay dbStay2 = stayMapper.selectByDormitoryIdAndBed(stay.getDormitoryId(), stay.getBed());
         if (ObjectUtil.isNotEmpty(dbStay2)) {
             throw new CustomException("-1", "当前宿舍该床位已经有住宿了，请重新分配");
         }
