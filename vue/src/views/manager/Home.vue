@@ -98,8 +98,10 @@ export default {
     this.$request.get('/notice/selectAll').then(res => {
       this.notices = res.data || []
     })
-    this.loadElectro()
-    this.loadStay()
+    if (this.user.role === 'ADMIN') {
+      this.loadElectro()
+      this.loadStay()
+    }
   },
   methods: {
     loadElectro() {

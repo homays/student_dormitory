@@ -1,9 +1,14 @@
 package com.example.service;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.example.common.enums.RoleEnum;
+import com.example.entity.Account;
 import com.example.entity.Electro;
+import com.example.entity.Stay;
 import com.example.exception.CustomException;
 import com.example.mapper.ElectroMapper;
+import com.example.mapper.StayMapper;
+import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -16,6 +21,8 @@ public class ElectroService {
 
     @Resource
     private ElectroMapper electroMapper;
+    @Resource
+    private StayMapper stayMapper;
 
     /**
      * 新增
@@ -70,6 +77,12 @@ public class ElectroService {
      */
     public PageInfo<Electro> selectPage(Electro electro, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
+        Account currentUser = TokenUtils.getCurrentUser();
+        if (currentUser.getRole().equals(RoleEnum.STUDENT.name())) {
+            // 学生只能看到自己寝室的费用缴纳信息
+            Stay res = stayMapper.selectByStudentId(currentUser.getId());
+            electro.setDormitoryId(res.getDormitoryId());
+        }
         List<Electro> list = electroMapper.selectAll(electro);
         return PageInfo.of(list);
     }

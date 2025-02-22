@@ -2,6 +2,8 @@ package com.example.service;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.example.common.enums.RoleEnum;
+import com.example.entity.Account;
 import com.example.entity.Dormitory;
 import com.example.entity.Exchanges;
 import com.example.entity.Stay;
@@ -9,6 +11,7 @@ import com.example.exception.CustomException;
 import com.example.mapper.DormitoryMapper;
 import com.example.mapper.ExchangesMapper;
 import com.example.mapper.StayMapper;
+import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
@@ -109,6 +112,12 @@ public class StayService {
      */
     public PageInfo<Stay> selectPage(Stay stay, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
+        Account currentUser = TokenUtils.getCurrentUser();
+        if (currentUser.getRole().equals(RoleEnum.STUDENT.name())) {
+            // 学生只能看到自己寝室的住宿信息
+            Stay res = stayMapper.selectByStudentId(currentUser.getId());
+            stay.setDormitoryId(res.getDormitoryId());
+        }
         List<Stay> list = stayMapper.selectAll(stay);
         return PageInfo.of(list);
     }
