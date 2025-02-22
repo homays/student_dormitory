@@ -49,6 +49,7 @@
             <el-menu-item index="/exchanges">换寝信息</el-menu-item>
             <el-menu-item index="/fix">报修信息</el-menu-item>
             <el-menu-item index="/visit" v-if="user.role === 'ADMIN'">来访登记</el-menu-item>
+            <el-menu-item index="/electro">电费缴纳</el-menu-item>
           </el-submenu>
 
           <el-submenu index="user" v-if="user.role === 'ADMIN'">

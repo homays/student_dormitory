@@ -30,6 +30,7 @@ const routes = [
       { path: 'exchanges', name: 'Exchanges', meta: { name: '换寝信息' }, component: () => import('../views/manager/Exchanges') },
       { path: 'fix', name: 'Fix', meta: { name: '保修信息' }, component: () => import('../views/manager/Fix') },
       { path: 'visit', name: 'Visit', meta: { name: '来访登记' }, component: () => import('../views/manager/Visit') },
+      { path: 'electro', name: 'Electro', meta: { name: '电费缴纳' }, component: () => import('../views/manager/Electro') },
     ]
   },
   {
