@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="operation">
+    <div class="operation" v-if="user.role ==='ADMIN'">
       <el-button type="danger" plain @click="delBatch">批量删除</el-button>
     </div>
 
@@ -16,7 +16,7 @@
         <el-table-column prop="bedb" label="学生B原床位"></el-table-column>
         <el-table-column prop="time" label="操作时间"></el-table-column>
 
-        <el-table-column label="操作" width="180" align="center">
+        <el-table-column label="操作" width="180" align="center" v-if="user.role ==='ADMIN'">
           <template v-slot="scope">
             <el-button plain type="danger" size="mini" @click=del(scope.row.id)>删除</el-button>
           </template>

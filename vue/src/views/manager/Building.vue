@@ -6,7 +6,7 @@
       <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
     </div>
 
-    <div class="operation">
+    <div class="operation" v-if="user.role ==='ADMIN'">
       <el-button type="primary" plain @click="handleAdd">新增</el-button>
       <el-button type="danger" plain @click="delBatch">批量删除</el-button>
     </div>
@@ -19,7 +19,7 @@
         <el-table-column prop="location" label="位置" show-overflow-tooltip></el-table-column>
         <el-table-column prop="num" label="宿舍数"></el-table-column>
 
-        <el-table-column label="操作" width="180" align="center">
+        <el-table-column label="操作" width="180" align="center" v-if="user.role ==='ADMIN'">
           <template v-slot="scope">
             <el-button plain type="primary" @click="handleEdit(scope.row)" size="mini">编辑</el-button>
             <el-button plain type="danger" size="mini" @click=del(scope.row.id)>删除</el-button>
