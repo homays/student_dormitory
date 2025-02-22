@@ -25,7 +25,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="180" align="center">
+        <el-table-column label="操作" width="180" align="center" v-if="user.role === 'ADMIN'">
           <template v-slot="scope">
             <el-button plain type="primary" @click="handleEdit(scope.row)" size="mini">编辑</el-button>
             <el-button plain type="danger" size="mini" @click=del(scope.row.id)>删除</el-button>
