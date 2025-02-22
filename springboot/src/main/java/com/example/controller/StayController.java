@@ -88,4 +88,13 @@ public class StayController {
         return Result.success(page);
     }
 
+    @PostMapping("/exchange")
+    public Result exchange(@RequestBody Stay stay) {
+        if (ObjectUtil.isEmpty(stay.getExStudentId())) {
+            throw new CustomException("-1", "请选择学生");
+        }
+        stayService.exchange(stay);
+        return Result.success();
+    }
+
 }

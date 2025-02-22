@@ -17,13 +17,13 @@
         <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column prop="id" label="序号" width="80" align="center" sortable></el-table-column>
         <el-table-column prop="studentName" label="学生姓名" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="bed" label="床位号"></el-table-column>
         <el-table-column prop="dormitoryName" label="宿舍号" show-overflow-tooltip></el-table-column>
         <el-table-column prop="buildingName" label="宿舍楼"></el-table-column>
-        <el-table-column prop="bed" label="床位号"></el-table-column>
 
-        <el-table-column label="操作" width="180" align="center">
+        <el-table-column label="操作" width="200" align="center">
           <template v-slot="scope">
-            <el-button plain type="primary" @click="handleEdit(scope.row)" size="mini">编辑</el-button>
+            <el-button plain type="primary" @click="handleEdit(scope.row)" size="mini">更换宿舍/床位</el-button>
             <el-button plain type="danger" size="mini" @click=del(scope.row.id)>删除</el-button>
           </template>
         </el-table-column>
@@ -41,7 +41,6 @@
         </el-pagination>
       </div>
     </div>
-
 
     <el-dialog title="住宿信息" :visible.sync="fromVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
       <el-form label-width="100px" style="padding-right: 50px" :model="form" :rules="rules" ref="formRef">
@@ -65,6 +64,19 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="更换宿舍/床位" :visible.sync="exchangeVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
+      <el-form label-width="100px" style="padding-right: 50px">
+        <el-form-item prop="studentId" label="选择学生">
+          <el-select v-model="studentId" placeholder="请选择" style="width: 100%">
+            <el-option v-for="item in studentData" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="exchangeVisible = false">取 消</el-button>
+        <el-button type="primary" @click="exchange">确 定</el-button>
+      </div>
+    </el-dialog>
 
   </div>
 </template>
@@ -81,6 +93,7 @@ export default {
       studentName: null,
       dormitoryName: null,
       fromVisible: false,
+      exchangeVisible: false,
       form: {},
       user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
       rules: {
@@ -96,6 +109,7 @@ export default {
       },
       ids: [],
       studentData: [],
+      studentId: null,
       dormitoryData: []
     }
   },
@@ -129,7 +143,7 @@ export default {
     },
     handleEdit(row) {   // 编辑数据
       this.form = JSON.parse(JSON.stringify(row))  // 给form对象赋值  注意要深拷贝数据
-      this.fromVisible = true   // 打开弹窗
+      this.exchangeVisible = true   // 打开弹窗
     },
     save() {   // 保存按钮触发的逻辑  它会触发新增或者更新
       this.$refs.formRef.validate((valid) => {
@@ -204,6 +218,18 @@ export default {
     },
     handleCurrentChange(pageNum) {
       this.load(pageNum)
+    },
+    exchange() {
+      this.form.exStudentId = this.studentId
+      this.$request.post('/stay/exchange', this.form).then(res => {
+        if (res.code === '200') {
+          this.$message.success('操作成功')
+          this.exchangeVisible = false
+          this.load(1)
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
     },
   }
 }

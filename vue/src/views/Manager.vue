@@ -44,7 +44,7 @@
             </template>
             <el-menu-item index="/notice">公告信息</el-menu-item>
             <el-menu-item index="/building">宿舍楼信息</el-menu-item>
-            <el-menu-item index="/dormitory">宿舍楼信息</el-menu-item>
+            <el-menu-item index="/dormitory">寝室信息</el-menu-item>
             <el-menu-item index="/stay">住宿信息</el-menu-item>
           </el-submenu>
 

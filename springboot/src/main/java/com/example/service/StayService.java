@@ -8,6 +8,7 @@ import com.example.mapper.DormitoryMapper;
 import com.example.mapper.StayMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -107,4 +108,34 @@ public class StayService {
         return PageInfo.of(list);
     }
 
+    public void exchange(Stay stay) {
+        if (stay.getStudentId().equals(stay.getExStudentId())) {
+            throw new CustomException("-1", "请不要选择同一个学生更换");
+        }
+        // stay里面保存了学生A的住宿信息，exStay里面保存了学生B的住宿信息
+        Integer exStudentId = stay.getExStudentId();
+        Stay exStay = stayMapper.selectByStudentId(exStudentId);
+        if (ObjectUtil.isNull(exStay)) {
+            throw new CustomException("-1", "该学生暂无住宿信息，请重新选择");
+        }
+
+        // 如何调换a和b的值？首先创建一个新的变量c，然后把a的值赋值给c，再把b的值赋值给a，最后再把c的值赋值给b
+        // 1. 创建一个临时的住宿信息tmpStay，把学生A（stay）数据暂存起来
+        Stay tmpStay = new Stay();
+        BeanUtils.copyProperties(stay, tmpStay);
+
+        // 2. 把学生B（exStay）的数据赋值到stay里面（id不能赋值）
+        stay.setBed(exStay.getBed());
+        stay.setDormitoryId(exStay.getDormitoryId());
+        stay.setBuildingId(exStay.getBuildingId());
+
+        // 3. 把tmpStay（学生A的）的数据复制到exStay里面（id不能赋值）
+        exStay.setBed(tmpStay.getBed());
+        exStay.setDormitoryId(tmpStay.getDormitoryId());
+        exStay.setBuildingId(tmpStay.getBuildingId());
+
+        // 更新学生A和学生B的住宿信息
+        stayMapper.updateById(stay);
+        stayMapper.updateById(exStay);
+    }
 }

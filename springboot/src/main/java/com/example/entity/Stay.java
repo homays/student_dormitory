@@ -14,6 +14,15 @@ public class Stay implements Serializable {
     private String studentName;
     private String dormitoryName;
     private String buildingName;
+    private Integer exStudentId;
+
+    public Integer getExStudentId() {
+        return exStudentId;
+    }
+
+    public void setExStudentId(Integer exStudentId) {
+        this.exStudentId = exStudentId;
+    }
 
     public Integer getId() {
         return id;
