@@ -33,7 +33,10 @@ public interface StayMapper {
     */
     List<Stay> selectAll(Stay stay);
 
-    @Select("select * from stay where student_id = #{studentId}")
+    @Select("select stay.*, student.name as studentName, dormitory.code as dormitoryName from stay " +
+            "left join student on stay.student_id = student.id " +
+            "left join dormitory on stay.dormitory_id = dormitory.id " +
+            "where student_id = #{studentId}")
     Stay selectByStudentId(Integer studentId);
 
     @Select("select * from stay where dormitory_id = #{dormitoryId} and bed = #{bed}")

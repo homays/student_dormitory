@@ -1,10 +1,13 @@
 package com.example.service;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.example.entity.Dormitory;
+import com.example.entity.Exchanges;
 import com.example.entity.Stay;
 import com.example.exception.CustomException;
 import com.example.mapper.DormitoryMapper;
+import com.example.mapper.ExchangesMapper;
 import com.example.mapper.StayMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -21,6 +24,8 @@ public class StayService {
     private StayMapper stayMapper;
     @Resource
     private DormitoryMapper dormitoryMapper;
+    @Resource
+    private ExchangesMapper exchangesMapper;
 
     /**
      * 新增
@@ -137,5 +142,16 @@ public class StayService {
         // 更新学生A和学生B的住宿信息
         stayMapper.updateById(stay);
         stayMapper.updateById(exStay);
+
+        // 生成一条换寝记录
+        Exchanges exchanges = new Exchanges();
+        exchanges.setStudenta(stay.getStudentName());
+        exchanges.setBeda(exStay.getBed());
+        exchanges.setDormitorya(stay.getDormitoryName());
+        exchanges.setStudentb(exStay.getStudentName());
+        exchanges.setBedb(stay.getBed());
+        exchanges.setDormitoryb(exStay.getDormitoryName());
+        exchanges.setTime(DateUtil.now());
+        exchangesMapper.insert(exchanges);
     }
 }

@@ -46,6 +46,7 @@
             <el-menu-item index="/building">宿舍楼信息</el-menu-item>
             <el-menu-item index="/dormitory">寝室信息</el-menu-item>
             <el-menu-item index="/stay">住宿信息</el-menu-item>
+            <el-menu-item index="/exchanges">换寝信息</el-menu-item>
           </el-submenu>
 
           <el-submenu index="user" v-if="user.role === 'ADMIN'">
